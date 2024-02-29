@@ -1,0 +1,278 @@
+[
+    {
+        "id": "64a03c33d48b6192",
+        "type": "tab",
+        "label": "Ejercicio 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "1b1913eee12611cc",
+        "type": "mqtt in",
+        "z": "64a03c33d48b6192",
+        "name": "oscarserver/temp",
+        "topic": "oscarserver/temp",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "36977352b6bb3576",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 120,
+        "y": 160,
+        "wires": [
+            [
+                "90ac4cfc46ba65da",
+                "57fcd17ef31d8318",
+                "f2c7161a6c013c80"
+            ]
+        ]
+    },
+    {
+        "id": "90ac4cfc46ba65da",
+        "type": "function",
+        "z": "64a03c33d48b6192",
+        "name": "Insert",
+        "func": "if (msg.topic === \"oscarserver/temp\" && !isNaN(msg.payload)){\n    msg.topic = \"INSERT INTO tbl_temperatura(temperatura, descripcion)\"\n    + \"VALUES(\" + msg.payload + \", 'Insercion desde MQTT')\";\n} else{\n    msg.topic = \"\";\n}\n\n\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 160,
+        "wires": [
+            [
+                "f93aa7df6bd9431b"
+            ]
+        ]
+    },
+    {
+        "id": "f93aa7df6bd9431b",
+        "type": "mysql",
+        "z": "64a03c33d48b6192",
+        "mydb": "1f68e869c50f9239",
+        "name": "Base de datos",
+        "x": 580,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "57fcd17ef31d8318",
+        "type": "ui_gauge",
+        "z": "64a03c33d48b6192",
+        "name": "",
+        "group": "6f26ca7ea47236e2",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperatura",
+        "label": "C",
+        "format": "{{value}} °C",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#2121e8",
+            "#00ff00",
+            "#ff0000"
+        ],
+        "seg1": "30",
+        "seg2": "60",
+        "diff": false,
+        "className": "",
+        "x": 390,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "f2c7161a6c013c80",
+        "type": "ui_chart",
+        "z": "64a03c33d48b6192",
+        "name": "Historico",
+        "group": "19d3ec6ed09174ad",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "Historico",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#8dbe23",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 380,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8920bf57571fa3cd",
+        "type": "comment",
+        "z": "64a03c33d48b6192",
+        "name": "MQTT SUB",
+        "info": "# Hola aqui estamos haciendo un \n\n```\noscarserver\n```",
+        "x": 110,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "5df97fc0face031a",
+        "type": "mqtt in",
+        "z": "64a03c33d48b6192",
+        "name": "oscarserver/humedad",
+        "topic": "oscarserver/humedad",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "36977352b6bb3576",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "6aa36167b3216a0a",
+                "f2c7161a6c013c80"
+            ]
+        ]
+    },
+    {
+        "id": "6aa36167b3216a0a",
+        "type": "ui_gauge",
+        "z": "64a03c33d48b6192",
+        "name": "",
+        "group": "6f26ca7ea47236e2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "donut",
+        "title": "Humedad",
+        "label": "",
+        "format": "{{value}} %",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#e1da14",
+            "#3de600",
+            "#4f1fff"
+        ],
+        "seg1": "30",
+        "seg2": "60",
+        "diff": false,
+        "className": "",
+        "x": 380,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "297fc1c58d1aec36",
+        "type": "comment",
+        "z": "64a03c33d48b6192",
+        "name": "GDS0551",
+        "info": "# Oscar Daniel Morales Navarro\n\n# 1222100466\n\n```\noscarserver\n```",
+        "x": 380,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "36977352b6bb3576",
+        "type": "mqtt-broker",
+        "name": "Server",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "edm",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1f68e869c50f9239",
+        "type": "MySQLdatabase",
+        "name": "Server DB",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "iot_bd",
+        "tz": "",
+        "charset": "UTF8"
+    },
+    {
+        "id": "6f26ca7ea47236e2",
+        "type": "ui_group",
+        "name": "Informacion",
+        "tab": "6a30dd1dbffb413c",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "19d3ec6ed09174ad",
+        "type": "ui_group",
+        "name": "Historicos de Datos",
+        "tab": "6a30dd1dbffb413c",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6a30dd1dbffb413c",
+        "type": "ui_tab",
+        "name": "oscariot",
+        "icon": "twitter",
+        "disabled": false,
+        "hidden": false
+    }
+]
